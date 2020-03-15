@@ -8,14 +8,28 @@ namespace APP_Facturacion
 {
     class Producto
     {
-        int idProducto;
-        string nombreProducto;
-        int stock;
-        int valor;
+        public int idProducto;
+        public string nombreProducto;
+        public int stock;
+        public int valor;
+        public int estadoProducto = 1;
+        private int cantidad;
 
-        public int IdProducto { get; set; }
-        public int NombreProducto { get; set; }
-        public int Stock { get; set; }
-        public int Valor { get; set; }
+        public int IdProducto { get => idProducto; set => idProducto = value; }
+        public string NombreProducto { get => nombreProducto; set => nombreProducto = value; }
+        public int Stock { get => stock; set => stock = value; }
+        public int Valor { get => valor; set => valor = value; }
+        public int EstadoProducto { get => estadoProducto; set => estadoProducto = value; }
+        public int Cantidad { get => cantidad; set => cantidad = value; }
+
+        public Producto()
+        {
+
+        }
+
+        public double valorTotal()
+        {
+            return this.valor * this.Cantidad;
+        }
     }
 }
