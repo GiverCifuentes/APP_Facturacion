@@ -22,10 +22,6 @@ namespace APP_Facturacion
         public int EstadoProducto { get => estadoProducto; set => estadoProducto = value; }
         public int Cantidad { get => cantidad; set => cantidad = value; }
 
-        public Producto()
-        {
-
-        }
 
         public double valorTotal()
         {
