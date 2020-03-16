@@ -9,7 +9,7 @@ namespace APP_Facturacion
     class Factura
     {
         public int idFactura;
-        private int idCliente;
+        public int idCliente;
         public string fecha;
         public double totalFactura = 0;
         public List<Cliente> listaClientes = new List<Cliente>();

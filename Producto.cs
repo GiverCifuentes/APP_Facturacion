@@ -13,19 +13,23 @@ namespace APP_Facturacion
         public int stock;
         public int valor;
         public int estadoProducto = 1;
-        private int cantidad;
+        public int cantidadVendida;
 
         public int IdProducto { get => idProducto; set => idProducto = value; }
         public string NombreProducto { get => nombreProducto; set => nombreProducto = value; }
         public int Stock { get => stock; set => stock = value; }
         public int Valor { get => valor; set => valor = value; }
         public int EstadoProducto { get => estadoProducto; set => estadoProducto = value; }
-        public int Cantidad { get => cantidad; set => cantidad = value; }
+        public int CantidadVendida { get => cantidadVendida; set => cantidadVendida = value; }
 
-
-        public double valorTotal()
+        public int valorTotalProd(int cantidad)
         {
-            return this.valor * this.Cantidad;
+            return this.valor * this.cantidadVendida;
+        }
+
+        public int inventario(int cantidadCliente)
+        {
+            return this.Stock - this.cantidadVendida;
         }
     }
 }

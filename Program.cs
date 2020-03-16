@@ -289,15 +289,15 @@ namespace APP_Facturacion
                 else if (respuestaInicio == 3)
                 {
                     //facturar
-
+                    
                     int rtaFacturar;
                     Console.WriteLine("(1) Agregar Factura (2) listar todas las facturas");
                     rtaFacturar = int.Parse(Console.ReadLine());
-
-                    idFactura = listaFacturas.Count + 1;
+                   
 
                     if (rtaFacturar == 1)
                     {
+                       
                         //Agregar factura
                         Cliente cliente = new Cliente();
                         Factura factura = new Factura();
@@ -308,6 +308,10 @@ namespace APP_Facturacion
 
                         for (int i = 0; i < listaClientes.Count; i++)
                         {
+                            idFactura = listaFacturas.Count + 1;
+                            Console.WriteLine("Ingrese la fecha");
+                            
+
                             if (idCliente == listaClientes[i].documento)
                             {
 
@@ -327,41 +331,55 @@ namespace APP_Facturacion
                                     Producto producto = new Producto();
 
                                     Console.WriteLine("Digite el codigo del producto ");
-                                    producto.IdProducto = int.Parse(Console.ReadLine());                                    
-                                    
-                                    Console.WriteLine("Ingrese la cantidad ");
-                                    producto.Cantidad = int.Parse(Console.ReadLine());   
-                                    
-                                    //agregar valor
+                                    int idProducto = int.Parse(Console.ReadLine());
 
-                                    factura.totalFactura = factura.totalFactura + producto.valorTotal();
+                                    for (int p = 0; p < listaProductos.Count; p++)
+                                    {
+                                        if (idProducto == listaProductos[p].idProducto)
+                                        {
+                                            Console.WriteLine("Nombre " + listaProductos[p].NombreProducto
+                                                + "Valor unitario: " + listaProductos[p].Valor);
 
-                                    factura.listaProductos.Add(producto);
+                                            Console.WriteLine("Ingrese la cantidad ");
+                                            int cantidad = int.Parse(Console.ReadLine());
 
+
+                                            if (listaProductos[p].stock < cantidad)
+                                            {
+
+                                                Console.WriteLine("No hay stock suficientes, hay: " + listaProductos[p].stock);
+                                            }
+                                            else if (listaProductos[p].stock > 0)
+                                            {
+                                                listaProductos[p].stock = listaProductos[p].inventario(cantidad);
+
+
+                                                Console.WriteLine("Quedan: " + listaProductos[p].stock);
+                                                int vp = producto.valorTotalProd(cantidad);
+                                                factura.totalFactura = factura.totalFactura + vp;
+                                            }
+                                        }                                                                               
+                                    }
                                     Console.WriteLine("¿Desea seguir ingresando productos?");
-
                                     if (Console.ReadLine().Equals("no"))
                                     {
                                         resp = false;
-                                    }
-                                }
-
+                                    }                                    
+                                }                                
                                 listaFacturas.Add(factura);
 
-
-                                foreach (var factu in listaFacturas)
-                                {
-                                        Console.WriteLine("Numero de factura : " + factu.idFactura);                                        
-
-                                        foreach (Producto producto in factura.listaProductos)
-                                        {
-                                            Console.WriteLine("NombreProducto: " + producto.NombreProducto
-                                                + " Cantidad: " + producto.Cantidad + " Valor Unitario: $"
-                                                + producto.Valor + " Valor Total: $" + producto.valorTotal()
-                                            );
-                                        }
-                                    
-                                }
+                                Console.WriteLine("IdFactura: " +listaFacturas);
+                                Console.WriteLine("Fecha: ");
+                                Console.WriteLine("Nombre cliente ");
+                                Console.WriteLine("Telefono");
+                                Console.WriteLine("documento");
+                                Console.WriteLine("edad");
+                                Console.WriteLine("Nombre prodcto");
+                                Console.WriteLine("cantidad");
+                                Console.WriteLine("subtotal productos");
+                                Console.WriteLine("Total factura: ");
+                                
+                                
                             }
                         }
                     }
