@@ -14,7 +14,6 @@ namespace APP_Facturacion
         public int valor;
         public int estadoProducto = 1;
         public int cantidadVendida;
-
         public int IdProducto { get => idProducto; set => idProducto = value; }
         public string NombreProducto { get => nombreProducto; set => nombreProducto = value; }
         public int Stock { get => stock; set => stock = value; }
@@ -26,13 +25,9 @@ namespace APP_Facturacion
         {
             return this.valor * this.cantidadVendida;
         }
-
         public int inventario(int cantidadCliente)
         {
             return this.stock - cantidadCliente;
         }
-
-
-
     }
 }
