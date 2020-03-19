@@ -13,13 +13,11 @@ namespace APP_Facturacion
             List<Cliente> listaClientes = new List<Cliente>();
             List<Factura> listaFacturas = new List<Factura>();
             List<Producto> listaProductos = new List<Producto>();
-
-
-
+           
             string seguir = "si";
             int doc;
             string datoModificar;
-            int idFactura;
+            int idFactura = 0;
             bool resp = true;
 
 
@@ -227,7 +225,7 @@ namespace APP_Facturacion
                                         listaProductos[i].nombreProducto = nomProducto;
                                         break;
                                     case "precio":
-                                        Console.WriteLine("Ingrese la nuevo precio");
+                                        Console.WriteLine("Ingrese el nuevo precio");
                                         int precioProducto = int.Parse(Console.ReadLine());
                                         listaProductos[i].valor = precioProducto;
                                         break;
@@ -251,6 +249,7 @@ namespace APP_Facturacion
                         if (rtaListar == 1)
                         {
                             //listar por id producto
+                            Producto producto = new Producto();
 
                             Console.WriteLine("Ingrese el numero del id");
                             doc = int.Parse(Console.ReadLine());
@@ -283,109 +282,138 @@ namespace APP_Facturacion
                         }
                     }
                 }
-  //--------------------------------------------------------------------------------------------------------------------------------------- 
-  //---------------------------------------------------------------------------------------------------------------------------------------
-
+               
                 else if (respuestaInicio == 3)
                 {
                     //facturar
+                    Cliente clienteFactura = new Cliente();
                     
+
                     int rtaFacturar;
-                    Console.WriteLine("(1) Agregar Factura (2) listar todas las facturas");
+                    string rtaFactura;
+
+
+                    Console.WriteLine("(1) Agregar Factura (2) listar facturas");
                     rtaFacturar = int.Parse(Console.ReadLine());
-                   
 
                     if (rtaFacturar == 1)
                     {
-                       
-                        //Agregar factura
-                        Cliente cliente = new Cliente();
-                        Factura factura = new Factura();
-                        
+                        resp = true;
 
-                        Console.WriteLine("Ingrese el documento del cliente");
-                        int idCliente = int.Parse(Console.ReadLine());
-
-                        for (int i = 0; i < listaClientes.Count; i++)
+                        while (resp)
                         {
-                            idFactura = listaFacturas.Count + 1;
+                            Factura nuevaFactura = new Factura();
+                            idFactura++;
+                            nuevaFactura.IdFactura = idFactura;
+                            int idProducto;
+
                             Console.WriteLine("Ingrese la fecha");
-                            
+                            string fecha = Console.ReadLine();
 
-                            if (idCliente == listaClientes[i].documento)
+                            nuevaFactura.Fecha = fecha;
+
+                            //datos del cliente:
+
+                            Console.WriteLine("ingrese el id del cliente");
+                            int idCliente = int.Parse(Console.ReadLine());
+
+                            for (int i = 0; i < listaClientes.Count; i++)
                             {
-
-                                foreach (Cliente client in listaClientes)
+                                if (idCliente == listaClientes[i].documento)
                                 {
-                                    Console.WriteLine("nombre: " + client.NombreCliente
-                                      + " documento: " + client.Documento
-                                      + " telefono: " + client.Telefono
-                                      + " edad: " + client.Edad);
-                                    
+                                    nuevaFactura.IdCliente = listaClientes[i].documento;
+                                    nuevaFactura.NombreCliente = listaClientes[i].NombreCliente;
+                                    Console.WriteLine("datos agregados...");
                                 }
 
-                                resp = true;
-
-                                while (resp)
-                                {
-                                    Producto producto = new Producto();
-
-                                    Console.WriteLine("Digite el codigo del producto ");
-                                    int idProducto = int.Parse(Console.ReadLine());
-
-                                    for (int p = 0; p < listaProductos.Count; p++)
-                                    {
-                                        if (idProducto == listaProductos[p].idProducto)
-                                        {
-                                            Console.WriteLine("Nombre " + listaProductos[p].NombreProducto
-                                                + "Valor unitario: " + listaProductos[p].Valor);
-
-                                            Console.WriteLine("Ingrese la cantidad ");
-                                            int cantidad = int.Parse(Console.ReadLine());
-
-
-                                            if (listaProductos[p].stock < cantidad)
-                                            {
-
-                                                Console.WriteLine("No hay stock suficientes, hay: " + listaProductos[p].stock);
-                                            }
-                                            else if (listaProductos[p].stock > 0)
-                                            {
-                                                listaProductos[p].stock = listaProductos[p].inventario(cantidad);
-
-
-                                                Console.WriteLine("Quedan: " + listaProductos[p].stock);
-                                                int vp = producto.valorTotalProd(cantidad);
-                                                factura.totalFactura = factura.totalFactura + vp;
-                                            }
-                                        }                                                                               
-                                    }
-                                    Console.WriteLine("¿Desea seguir ingresando productos?");
-                                    if (Console.ReadLine().Equals("no"))
-                                    {
-                                        resp = false;
-                                    }                                    
-                                }                                
-                                listaFacturas.Add(factura);
-
-                                Console.WriteLine("IdFactura: " +listaFacturas);
-                                Console.WriteLine("Fecha: ");
-                                Console.WriteLine("Nombre cliente ");
-                                Console.WriteLine("Telefono");
-                                Console.WriteLine("documento");
-                                Console.WriteLine("edad");
-                                Console.WriteLine("Nombre prodcto");
-                                Console.WriteLine("cantidad");
-                                Console.WriteLine("subtotal productos");
-                                Console.WriteLine("Total factura: ");
-                                
                                 
                             }
+
+                           
+                            bool agregar = true;
+                            while (agregar)
+                            {
+                                //agrego producto a listaFacturas:
+                                Producto producto = new Producto();
+
+                                Console.WriteLine("ingrese el codigo del producto");
+                                idProducto = int.Parse(Console.ReadLine());
+
+                                for (int p = 0; p < listaProductos.Count; p++)
+                                {
+
+                                    if (idProducto == listaProductos[p].idProducto)
+                                    {
+                                        Console.WriteLine("Ingrese la cantidad ");
+                                        int cantidad = int.Parse(Console.ReadLine());
+                                        producto.IdProducto = listaProductos[p].idProducto;
+                                        producto.NombreProducto = listaProductos[p].nombreProducto;
+                                        if (listaProductos[p].stock < cantidad)
+                                        {
+                                            Console.WriteLine("No hay stock suficientes, hay: " + listaProductos[p].Stock);
+                                        }
+                                        else if (listaProductos[p].stock > 0)
+                                        {
+                                            producto.CantidadVendida = cantidad;
+                                            producto.Stock = listaProductos[p].inventario(producto.CantidadVendida);
+
+                                            //Actualizo stock en listaProductos:
+                                            listaProductos[p].Stock = producto.Stock;
+
+                                            producto.Valor = listaProductos[p].Valor;
+
+                                            //sacor valor total por producto
+                                            nuevaFactura.SubtotalProducto = nuevaFactura.PrecioXCantidad(producto.CantidadVendida, producto.Valor);
+
+                                            //saco valor total por factura
+                                            nuevaFactura.TotalFactura = nuevaFactura.totalFactura + nuevaFactura.SubtotalProducto;
+                                        }
+                                        else if (listaProductos[p].stock == 0)
+                                        {
+                                            Console.WriteLine("no hay productos");
+                                        }
+                                        else if (idProducto != listaProductos[p].idProducto)
+                                        {
+                                            Console.WriteLine("El producto no existe en inventario");
+                                        }
+
+                                        nuevaFactura.listaProductos.Add(producto);
+                                        
+
+                                        Console.WriteLine("desea agregar mas productos???");
+                                        rtaFactura = Console.ReadLine();
+
+                                        if (rtaFactura.Equals("si"))
+                                        {
+                                            agregar = true;
+                                        }
+                                        else if (rtaFactura.Equals("no"))
+                                        {
+                                            agregar = false;
+                                        }
+                                    }
+                                }
+                            }
+                            
+                            listaFacturas.Add(nuevaFactura);
+                          
+                            Console.WriteLine("desea agregar mas facturas???");
+                            string masFacturas = Console.ReadLine();
+
+                            if (masFacturas.Equals("si"))
+                            {
+                                resp = true;
+                            }
+                            else if (masFacturas.Equals("no"))
+                            {
+                                resp = false;
+                            }
                         }
+
                     }
                     else if (rtaFacturar == 2)
                     {
-                        //listar todas las facturas
+                        //listar las facturas por codigo
                         Console.WriteLine("(1) para listar por codigo factura (2) todas las facturas");
                         int rta = int.Parse(Console.ReadLine());
                         if (rta == 1)
@@ -393,24 +421,55 @@ namespace APP_Facturacion
                             Console.WriteLine("Ingrese el numero de la factura");
                             doc = int.Parse(Console.ReadLine());
 
-                            foreach (var fact in listaFacturas)
+
+                            foreach (var factura in listaFacturas)
                             {
-                                if (fact.idFactura == doc)
+                                if (doc == factura.idFactura)
                                 {
-                                    Console.WriteLine("número factura: " + fact.idFactura
-                                   + " cliente: " + fact.IdCliente);
+                                    Console.WriteLine("----------Encabezado Factura----------");
+                                    Console.WriteLine("Numero de factura : " + factura.idFactura
+                                        + " Fecha: " + factura.fecha + " Cliente: " + factura.nombreCliente
+                                        + " Total factura: " + factura.totalFactura );
+
+                                    Console.WriteLine("----------Detalle Factura----------");
+
+                                    foreach (Producto producto in factura.listaProductos)
+                                    {
+                                        Console.WriteLine("NombreProducto: " + producto.NombreProducto
+                                            + " Cantidad: " + producto.CantidadVendida + " Valor Unitario: $"
+                                            + producto.Valor + " SubTotal: $" + ( producto.CantidadVendida * producto.Valor) );
+                                        
+                                    }
                                 }
                             }
+
+
                         }
                         else if (rta == 2)
                         {
-                            //listar todos los productos
+                            //listar todas las facturas
 
-                            foreach (var fact in listaFacturas)
+                            foreach (Factura factura in listaFacturas)
                             {
-                                Console.WriteLine("número factura: " + fact.idFactura
-                                  + " cliente: " + fact.IdCliente);
+                                Console.WriteLine("----------Encabezado Factura----------");
+                                    Console.WriteLine("Numero de factura : " + factura.idFactura
+                                        + " Fecha: " + factura.fecha + " Cliente: " + factura.nombreCliente
+                                        + " Total factura: " + factura.totalFactura );
+
+                                    Console.WriteLine("----------Detalle Factura----------");
+
+                                    foreach (Producto producto in factura.listaProductos)
+                                    {
+                                        Console.WriteLine("NombreProducto: " + producto.NombreProducto
+                                            + " Cantidad: " + producto.CantidadVendida + " Valor Unitario: $"
+                                            + producto.Valor + " SubTotal: $" + ( producto.CantidadVendida * producto.Valor) );
+                                        
+                                    }
+                                Console.WriteLine("");
+                                Console.WriteLine("----------------------------------------------");
+                                Console.WriteLine("");
                             }
+                            
                         }
                     }
                 }
@@ -423,7 +482,7 @@ namespace APP_Facturacion
 
                     if (rtaReportes == 1)
                     {
-                        Console.WriteLine("Los clientes mayores a 30 años son: ");                        
+                        Console.WriteLine("Los clientes mayores a 30 años son: ");
 
                         foreach (Cliente client in listaClientes)
                         {
@@ -434,11 +493,11 @@ namespace APP_Facturacion
                                                     + " telefono: " + client.Telefono
                                                     + " edad: " + client.Edad
                                                     + " estado: " + client.Estado);
-                                
+
                             }
-                            
+
                         }
-                        Console.WriteLine("");                        
+                        Console.WriteLine("");
                     }
                     else if (rtaReportes == 2)
                     {
@@ -446,7 +505,7 @@ namespace APP_Facturacion
 
                         foreach (Producto product in listaProductos)
                         {
-                            if (product.stock <=2)
+                            if (product.stock <= 2)
                             {
                                 Console.WriteLine("codigo producto: " + product.IdProducto
                                + " nombre: " + product.NombreProducto
@@ -462,16 +521,15 @@ namespace APP_Facturacion
                     {
                         Console.WriteLine("Las facturas mayores a $200.000 son: ");
 
-                        foreach(Factura factur in listaFacturas)
+                        foreach (Factura factur in listaFacturas)
                         {
-                            if (factur.totalFactura >=200000)
+                            if (factur.totalFactura >= 200000)
                             {
-                                Console.WriteLine("Id Factura: " + factur.IdFactura 
-                                    + "Fecha: " + factur.Fecha
-                                    + "Total Factura: " + "....factur.TotalFactura...."                                     
-                                    ); 
+                                Console.WriteLine("Id Factura: " + factur.IdFactura
+                                    + " Fecha: " + factur.Fecha
+                                    + " Total Factura: " + factur.totalFactura);
                             }
-                        }                        
+                        }
                     }
                 }
                 Console.WriteLine("desea volver al menú principal para cambiar de módulo?");
@@ -482,7 +540,7 @@ namespace APP_Facturacion
                     seguir = "no";
                 }
             }
-        }
+        }  
     }
 }
 

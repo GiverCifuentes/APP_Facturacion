@@ -19,5 +19,9 @@ namespace APP_Facturacion
         public int Telefono { get => telefono; set => telefono = value; }
         public int Edad { get => edad; set => edad = value; }
         public int Estado { get => estado; set => estado = value; }
+
+
     }
+
+    
 }

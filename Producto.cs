@@ -22,14 +22,17 @@ namespace APP_Facturacion
         public int EstadoProducto { get => estadoProducto; set => estadoProducto = value; }
         public int CantidadVendida { get => cantidadVendida; set => cantidadVendida = value; }
 
-        public int valorTotalProd(int cantidad)
+        public int valorTotalProd(int cantidad, int valor)
         {
             return this.valor * this.cantidadVendida;
         }
 
         public int inventario(int cantidadCliente)
         {
-            return this.Stock - this.cantidadVendida;
+            return this.stock - cantidadCliente;
         }
+
+
+
     }
 }
